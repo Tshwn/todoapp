@@ -14,6 +14,7 @@ Route::resource('/todo',TodoController::class)->middleware('auth')
     'update' => 'todo.update',
     'calendar' => 'todo.calendar',
 ]);
+Route::delete('/todo',[TodoController::class,'deleteMultiple'])->name('todo.deleteMultiple');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

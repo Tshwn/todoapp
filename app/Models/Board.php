@@ -26,12 +26,16 @@ class Board extends Model
         $tomorrow = Carbon::tomorrow()->toDateString();
         return $query->where('due_date',$tomorrow);
     }
-
     public function scopeThisWeekPosts($query) {
         $today = Carbon::today()->toDateString();
         // $startOfWeek = $today->startOfWeek();
         // $endOfWeek = $today->endOfWeek();
         $sevenDays = Carbon::today()->addDays(7)->toDateString();
         return $query->where('due_date','>=',$today)->where('due_date','<=',$sevenDays);
+    }
+
+    public function getFormatedDateAttribute()
+    {
+        return Carbon::parse($this->due_date)->format('m/d');
     }
 }

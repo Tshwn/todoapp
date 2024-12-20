@@ -7,16 +7,16 @@ window.Alpine = Alpine;
 Alpine.start();
 
 
-const toggleFormBtn = document.getElementById('toggleFormBtn');
 
-const inputFormContainer = document.getElementById('inputFormContainer');
+const inputForm = document.getElementById('inputForm');
+const toggleFormBtn = document.getElementById('toggleFormBtn');
 toggleFormBtn.addEventListener('click', function() {
-    inputFormContainer.classList.toggle('open');
+    inputForm.classList.toggle('open');
 });
 
 document.addEventListener('click', function(event) {
     if (!inputForm.contains(event.target) && !toggleFormBtn.contains(event.target)) {
-      inputFormContainer.classList.remove('open');
+      inputForm.classList.remove('open');
     }
   });
 
@@ -43,4 +43,10 @@ tasksThisWeek_btn.addEventListener('click', function() {
     tasksToday.classList.add('hidden');
     tasksTomorrow.classList.add('hidden');
     tasksThisWeek.classList.remove('hidden');
+});
+
+const DeleteBtn = document.getElementById('DeleteBtn');
+DeleteBtn.addEventListener('click', function() {
+    const hiddenDeleteButton = document.getElementById('hiddenDeleteButton');
+    hiddenDeleteButton.click();
 });

@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\BoardRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Carbon\Carbon;
 
 class TodoController extends Controller
 {
@@ -19,10 +20,11 @@ class TodoController extends Controller
         $sort = $request->sort;
 
         $user = Auth::user();
+        $today = Carbon::today()->toDateString();
         $todayPosts = Board::UserPosts($user)->TodayPosts()->orderBy($sort,'asc')->get();
         $tomorrowPosts = Board::UserPosts($user)->TomorrowPosts()->get();
         $thisWeekPosts = Board::UserPosts($user)->ThisWeekPosts()->get();
-        return view('todo.todo',['todayPosts' => $todayPosts,'tomorrowPosts' => $tomorrowPosts,'thisWeekPosts' => $thisWeekPosts,'user' => $user,'sort' => $sort]);
+        return view('todo.todo',['today' => $today,'todayPosts' => $todayPosts,'tomorrowPosts' => $tomorrowPosts,'thisWeekPosts' => $thisWeekPosts,'user' => $user,'sort' => $sort]);
     }
 
     public function calendar() {
@@ -106,5 +108,15 @@ class TodoController extends Controller
 
         $post->delete();
         return redirect()->route('todo.index');
+    }
+
+    public function deleteMultiple(Request $request)
+    {
+        $itemIds = $request->input('items', []);
+        if (empty($itemIds)) {
+            return redirect()->back()->with('error', 'アイテムが選択されていません。');
+        }
+        Board::whereIn('id', $itemIds)->delete();     
+        return redirect()->back()->with('success', '選択されたアイテムが削除されました。');
     }
 }

@@ -8,4 +8,10 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+
+    server:  {
+        host: '192.168.11.27', // ローカルネットワークからアクセスできるように設定
+        port: 8080, // 必要に応じてポートを変更
+        strictPort: true, // ポートが使用中の場合はエラー
+      },
 });
