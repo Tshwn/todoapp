@@ -9,7 +9,7 @@
     /bootstrap/4.3.1/css/bootstrap.min.css"> -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body style="height:100vh">
+<body>
     <header>@yield('header')</header>
     <main>@yield('main')</main>
     <footer>@yield('footer')</footer>
