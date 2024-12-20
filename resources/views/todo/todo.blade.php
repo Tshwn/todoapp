@@ -76,9 +76,9 @@ Todoリスト
     </div>
     
     <div class="date-tabs">
-        <button class="date-tabs__btn date-tabs__btn--today">今日</button>
-        <button class="date-tabs__btn date-tabs__btn--tommorow">明日</button>
-        <button class="date-tabs__btn date-tabs__btn--thisweek">今週</button>
+        <button id="tasks-today_btn" class="date-tabs__btn date-tabs__btn--today">今日</button>
+        <button id="tasks-tomorrow_btn" class="date-tabs__btn date-tabs__btn--tommorow">明日</button>
+        <button id="tasks-thisWeek_btn" class="date-tabs__btn date-tabs__btn--thisweek">今週</button>
     </div>
 @endsection
 
@@ -86,14 +86,33 @@ Todoリスト
 <form action="{{ route('todo.index') }}" method="post">
         @csrf
         @method('DELETE')
-<ul class="tasks-list">
-@foreach ($posts as $post)
+<ul id="tasks-today" class="tasks-list">
+    @foreach ($todayPosts as $post)
         <li class="tasks-list__item" style="background-color: {{ $post->color }}">
             <input type="checkbox" id="todoPosts{{ $post->id }}" value="{{ $post->message }}">
             <label for="todoPosts">{{ $post->message }}</label>
         </li>
-@endforeach
+    @endforeach
 </ul>
+
+<ul id="tasks-tomorrow" class="tasks-list hidden">
+    @foreach ($tomorrowPosts as $post)
+        <li class="tasks-list__item" style="background-color: {{ $post->color }}">
+            <input type="checkbox" id="todoPosts{{ $post->id }}" value="{{ $post->message }}">
+            <label for="todoPosts">{{ $post->message }}</label>
+        </li>
+    @endforeach
+</ul>
+
+<ul id="tasks-thisWeek" class="tasks-list hidden">
+    @foreach ($thisWeekPosts as $post)
+        <li class="tasks-list__item" style="background-color: {{ $post->color }}">
+            <input type="checkbox" id="todoPosts{{ $post->id }}" value="{{ $post->message }}">
+            <label for="todoPosts">{{ $post->message }}</label>
+        </li>
+    @endforeach
+</ul>
+
 <button type="submit" id="hiddenDeleteButton" style="display: none;">削除</button>
 </form>
 

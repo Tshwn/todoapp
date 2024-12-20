@@ -19,8 +19,10 @@ class TodoController extends Controller
         $sort = $request->sort;
 
         $user = Auth::user();
-        $posts = Board::UserPosts($user)->TodayPosts()->orderBy($sort,'asc')->get();
-        return view('todo.todo',['posts' => $posts,'user' => $user,'sort' => $sort]);
+        $todayPosts = Board::UserPosts($user)->TodayPosts()->orderBy($sort,'asc')->get();
+        $tomorrowPosts = Board::UserPosts($user)->TomorrowPosts()->get();
+        $thisWeekPosts = Board::UserPosts($user)->ThisWeekPosts()->get();
+        return view('todo.todo',['todayPosts' => $todayPosts,'tomorrowPosts' => $tomorrowPosts,'thisWeekPosts' => $thisWeekPosts,'user' => $user,'sort' => $sort]);
     }
 
     public function calendar() {
