@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Board;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\BoardRequest;
+use App\Http\Requests\TaskCreateRequest;
+use App\Http\Requests\TaskUpdateRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Carbon\Carbon;
 
@@ -17,13 +18,23 @@ class TodoController extends Controller
      */
     public function index(Request $request)
     {
+        $search = $request->input('search',null);
         $sort = $request->sort;
 
         $user = Auth::user();
         $today = Carbon::today()->toDateString();
-        $todayPosts = Board::UserPosts($user)->TodayPosts()->orderBy($sort,'asc')->get();
-        $tomorrowPosts = Board::UserPosts($user)->TomorrowPosts()->get();
-        $thisWeekPosts = Board::UserPosts($user)->ThisWeekPosts()->get();
+        if(isset($search))
+        {
+            $todayPosts = Board::UserPosts($user)->TodayPosts()->where('message','like','%' . $search . '%')->get();
+            $tomorrowPosts = Board::UserPosts($user)->TomorrowPosts()->where('message','like','%' . $search . '%')->get();
+            $thisWeekPosts = Board::UserPosts($user)->ThisWeekPosts()->where('message','like','%' . $search . '%')->get();
+        }
+        else
+        {
+            $todayPosts = Board::UserPosts($user)->TodayPosts()->get();
+            $tomorrowPosts = Board::UserPosts($user)->TomorrowPosts()->get();
+            $thisWeekPosts = Board::UserPosts($user)->ThisWeekPosts()->get();
+        }
         return view('todo.todo',['today' => $today,'todayPosts' => $todayPosts,'tomorrowPosts' => $tomorrowPosts,'thisWeekPosts' => $thisWeekPosts,'user' => $user,'sort' => $sort]);
     }
 
@@ -42,7 +53,7 @@ class TodoController extends Controller
      * Store a newly created resource in storage.
      */
     use AuthorizesRequests;
-    public function store(BoardRequest $request)
+    public function store(TaskCreateRequest $request)
     {
         $this->authorize('create', Todo::class);
         $param = [
@@ -77,16 +88,9 @@ class TodoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(TaskUpdateRequest $request, string $id)
     {
         $post = Board::findOrFail($id);
-        // if ($request->has('progress')) {
-        //     $request->progress = $request->progress === '未達成' ? '完了':'未達成';
-        //     $post->update([
-        //         'progress' => $request->progress,
-        //     ]);
-        //     return redirect()->route('todo.index');
-        // }
         $post->update([
             'message' => $request->message,
             'due_date' => $request->due_date,
@@ -118,5 +122,33 @@ class TodoController extends Controller
         }
         Board::whereIn('id', $itemIds)->delete();     
         return redirect()->back()->with('success', '選択されたアイテムが削除されました。');
+    }
+
+    public function upcomingTasks(Request $request)
+    {
+        $sort = $request->sort;
+
+        $user = Auth::user();
+        $today = Carbon::today()->toDateString();
+        $posts = Board::UserPosts($user)->where('due_date','>=',$today)->get();
+
+        return view('todo.upcomingTasks',['posts' => $posts,'user' => $user,'sort' => $sort,'today' => $today]);
+    }
+
+    public function pastTasks(Request $request)
+    {
+        $sort = $request->sort;
+
+        $user = Auth::user();
+        $today = Carbon::today()->toDateString();
+        $posts = Board::UserPosts($user)->where('due_date','<',$today)->get();
+
+        return view('todo.pastTasks',['posts' => $posts,'user' => $user,'sort' => $sort,'today' => $today]);
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->input('text');
+        return redirect()->route('todo.index',['search' => $search]);
     }
 }

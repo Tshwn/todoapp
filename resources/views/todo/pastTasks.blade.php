@@ -1,7 +1,7 @@
 @extends('layouts.todoapp')
 
 @section('title')
-Todoリスト
+今日以降のタスク
 @endsection
 
 
@@ -40,24 +40,10 @@ Todoリスト
                 <li><a href="">カレンダー</a></li>
             </ul>
         </div>
-
-        <div class="search-menu_container">
-            <button id="searchMenuBtn" class="search-menu__btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16">
-            <path fill="currentColor" d="m11.271 11.978l3.872 3.873a.5.5 0 0 0 .708 0a.5.5 0 0 0 0-.708l-3.565-3.564c2.38-2.747 2.267-6.923-.342-9.532c-2.73-2.73-7.17-2.73-9.898 0s-2.728 7.17 0 9.9a6.96 6.96 0 0 0 4.949 2.05a.5.5 0 0 0 0-1a5.96 5.96 0 0 1-4.242-1.757a6.01 6.01 0 0 1 0-8.486a6.004 6.004 0 0 1 8.484 0a6.01 6.01 0 0 1 0 8.486a.5.5 0 0 0 .034.738"/>
-            </svg>
-            </button>
-            <form action="{{ route('todo.search') }}" method="post">
-                <input type="text" name="text" value="{{ old('text') }}" placeholder="タスクを検索">
-                <input type="submit" value="検索する">
-            </form>
-        </div>
     </div>
     
     <div class="date-tabs">
-        <button id="tasks-today_btn" class="date-tabs__btn date-tabs__btn--today">今日</button>
-        <button id="tasks-tomorrow_btn" class="date-tabs__btn date-tabs__btn--tommorow">明日</button>
-        <button id="tasks-thisWeek_btn" class="date-tabs__btn date-tabs__btn--thisweek">７日間</button>
+        <p>過去のタスク</p>
     </div>
 @endsection
 
@@ -68,31 +54,11 @@ Todoリスト
 <form action="{{ route('todo.deleteMultiple') }}" method="post">
         @csrf
         @method('DELETE')
-<ul id="tasks-today" class="tasks-list">
-    @foreach ($todayPosts as $post)
+<ul id="tasks-all" class="tasks-list">
+    @foreach ($posts as $post)
         <li class="tasks-list__item" style="background-color: {{ $post->color }}">
             <input type="checkbox" name="items[]" id="itemToday_{{ $post->id }}" value="{{ $post->id }}">
             <label for="itemToday_{{ $post->id }}">{{ $post->message }}  {{ $post->formatedDate }}</label>
-            <a href="{{ route('todo.edit', $post->id) }}">編集</a>
-        </li>
-    @endforeach
-</ul>
-
-<ul id="tasks-tomorrow" class="tasks-list hidden">
-    @foreach ($tomorrowPosts as $post)
-        <li class="tasks-list__item" style="background-color: {{ $post->color }}">
-            <input type="checkbox" id="itemTomorrow_{{ $post->id }}" value="{{ $post->message }}">
-            <label for="itemTomorrow_{{ $post->id }}">{{ $post->message }}  {{ $post->formatedDate }}</label>
-            <a href="{{ route('todo.edit', $post->id) }}">編集</a>
-        </li>
-    @endforeach
-</ul>
-
-<ul id="tasks-thisWeek" class="tasks-list hidden">
-    @foreach ($thisWeekPosts as $post)
-        <li class="tasks-list__item" style="background-color: {{ $post->color }}">
-            <input type="checkbox" id="itemThisWeek_{{ $post->id }}" value="{{ $post->message }}">
-            <label for="itemThisWeek_{{ $post->id }}">{{ $post->message }} {{ $post->formatedDate }}</label>
             <a href="{{ route('todo.edit', $post->id) }}">編集</a>
         </li>
     @endforeach

@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BoardRequest extends FormRequest
+class TaskCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-            return true;
+        return true;
     }
 
     /**
@@ -25,6 +25,8 @@ class BoardRequest extends FormRequest
             'user_id' => 'required,exists:users,id',
             'message' => 'required',
             'due_date' => 'date',
+            'color' => 'required',
+            // 'color' => 'required|regex:/^#([a-f0-9]{6}|[a-f0-9]{3})$/i'
         ];
     }
 
@@ -33,6 +35,9 @@ class BoardRequest extends FormRequest
         return [
             'user_id.exists' => 'ユーザーIDが存在しません。',
             'message.required' => 'メッセージは必ず入力してください。',
+            'due_date.date' => '日付で入力してください',
+            'color.required' => '必ず入力してください',
+            'color.regex' => 'hex形式で入力してください',
         ];
     }
 }

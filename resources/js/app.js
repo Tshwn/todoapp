@@ -6,6 +6,35 @@ window.Alpine = Alpine;
 
 Alpine.start();
 
+const DeleteBtn = document.getElementById('DeleteBtn');
+DeleteBtn.addEventListener('click', function() {
+    const hiddenDeleteButton = document.getElementById('hiddenDeleteButton');
+    hiddenDeleteButton.click();
+});
+
+const settingsMenu = document.getElementById('settingsMenu');
+const settingsMenuBtn = document.getElementById('settingsMenuBtn');
+settingsMenuBtn.addEventListener('click', function() {
+    settingsMenu.classList.toggle('open');
+});
+
+document.addEventListener('click', function(event) {
+    if (!settingsMenu.contains(event.target) && !settingsMenuBtn.contains(event.target)) {
+        settingsMenu.classList.remove('open');
+    }
+  });
+
+  const mainMenu = document.getElementById('mainMenu');
+const mainMenuBtn = document.getElementById('mainMenuBtn');
+mainMenuBtn.addEventListener('click', function() {
+    mainMenu.classList.toggle('open');
+});
+
+document.addEventListener('click', function(event) {
+    if (!mainMenu.contains(event.target) && !mainMenuBtn.contains(event.target)) {
+        mainMenu.classList.remove('open');
+    }
+  });
 
 
 const inputForm = document.getElementById('inputForm');
@@ -43,10 +72,4 @@ tasksThisWeek_btn.addEventListener('click', function() {
     tasksToday.classList.add('hidden');
     tasksTomorrow.classList.add('hidden');
     tasksThisWeek.classList.remove('hidden');
-});
-
-const DeleteBtn = document.getElementById('DeleteBtn');
-DeleteBtn.addEventListener('click', function() {
-    const hiddenDeleteButton = document.getElementById('hiddenDeleteButton');
-    hiddenDeleteButton.click();
 });
