@@ -10,7 +10,7 @@ body {
 }
 
 header {
-    height: auto;
+    height: 125px;
     display: flex;
     flex-direction: column;
 }
@@ -40,6 +40,7 @@ header {
     display: flex;
     flex-direction: column;
     position:fixed;
+    text-align: center;
     width:100%;
     left: -100%;
     transition:.5s ease-in-out;
@@ -47,14 +48,55 @@ header {
     margin-left:0;
     z-index:100;
 }
+
+.settings-menu li {
+    width: 90%;
+    font-size:20px;
+    padding: 10px;
+    margin: 10px auto 10px;
+    border: solid 1px #00ff7f;
+}
 .settings-menu.open {
     background-color: #b0c4de;
-    height: 95vh;
-    width:95vw;
+    height: 90vh;
+    width:70vw;
     left:0;
     bottom: 0;
 }
+.settings-menu__logout {
+        background-color: gray;  /* ボタンの背景色 */
+        color: white;               /* 文字色 */
+        padding: 10px 20px;         /* ボタン内の余白 */
+        border: none;               /* ボタンの枠線をなしに */
+        border-radius: 5px;         /* 角を丸く */
+        font-size: 16px;            /* 文字の大きさ */
+        cursor: pointer;            /* ポインタがボタンの上に来たときにカーソルが指に変わる */
+        transition: background-color 0.3s ease;  /* 背景色が変わるアニメーション */
+}
 
+.search-menu__btn {
+    position: fixed;
+    top:0;
+    right:50px;
+    padding: 20px;
+}
+.search-menu__text {
+    position: fixed;
+    top:10px;
+    right:60px;
+    margin-bottom: 0;
+    height: 30px;
+    width: 120px;
+}
+.search-menu__submit {
+    position: fixed;
+    top:40px;
+    right:60px;
+    padding: 0;
+    margin-bottom: 0;
+    font-size: 15px;
+    border: solid 1px #121212;
+}
 .main-menu__container {
     height:1%;
     width: 100%;
@@ -71,6 +113,7 @@ header {
     display: flex;
     flex-direction: column;
     position:fixed;
+    text-align: center;
     width:100%;
     right: -100%;
     transition:.5s ease-in-out;
@@ -85,11 +128,21 @@ header {
     right:0;
     bottom: 0;
 }
+.main-menu li {
+    width: 80%;
+    font-size:20px;
+    padding: 10px;
+    margin: 10px auto;
+    border: solid 1px #00ff7f;
+}
 
 .date-tabs {
+    position: fixed;
+    width: 100%;
+    top:70px;
     padding:10px 0;
     text-align: center;
-    border:solid 1px #121212;
+    border:solid 2px #121212;
 }
 
 .date-tabs__btn {
@@ -99,18 +152,24 @@ header {
     transition:.8s;
 
     &:hover {
-        border-bottom:solid 1px rgba(255,55,255,1);
+        border-bottom:solid 2px rgba(255,55,255,1);
     }
 }
+
+.active {
+    border-bottom:solid 3px rgba(255,55,255,1);
+}
+
 .tasks-list {
-    position: relative;
-    width: 80%;
+    position: fixed;
+    width: 100%;
     height: 60vh;
     text-align: center;
     padding: 5px;
     margin: 0 auto;
-    border: solid 2px rgba(0,0,0,1);
+    border: solid 2px rgba(0,0,0,1); /*タスクの枠線 */
     overflow: scroll;
+    z-index: -1;
 }
 
 .tasks-list::-webkit-scrollbar {
@@ -122,18 +181,23 @@ header {
     border-radius: 20px;
 }
 
-.tasks__btn {
-    display: flex;
-    justify-content: space-between;
-    margin: 0 auto;
-    padding:10px;
+.tasks-delete__btn {
+    position: fixed;
+    bottom:0;
+    left:0;
+    padding: 20px;
+}
+.tasks-add__btn {
+    position: fixed;
+    bottom:0;
+    right:0;
+    padding: 20px;
 }
 
 .tasks-add-form__container {
     height:1%;
     width: 100%;
     position:relative;
-    border: solid 2px #121212;
     overflow: hidden;
 }
 
@@ -193,11 +257,11 @@ header {
   }
 
   /* ラジオボタンが選択されていないときの色を表示 */
-  .color-radio[value="#FF0000"] + .color-circle {
-    background-color: #FF0000;
+  .color-radio[value="#ff6347"] + .color-circle {
+    background-color: #ff6347;
   }
-  .color-radio[value="#00FF00"] + .color-circle {
-    background-color: #00FF00;
+  .color-radio[value="#00ff7f"] + .color-circle {
+    background-color: #00ff7f;
   }
   .color-radio[value="#D3D3D3"] + .color-circle {
     background-color: #D3D3D3;

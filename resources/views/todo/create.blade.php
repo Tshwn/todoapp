@@ -4,12 +4,12 @@
 
   <div class="tasks-add-form__color tasks-add-form__item">
     <label>
-      <input type="radio" name="color" value="#FF0000" class="color-radio" checked/>
+      <input type="radio" name="color" value="#ff6347" class="color-radio" checked/>
       <span class="color-circle"></span>
     </label>
     
     <label>
-      <input type="radio" name="color" value="#00FF00" class="color-radio tasks-add-form__item" />
+      <input type="radio" name="color" value="#00ff7f" class="color-radio tasks-add-form__item" />
       <span class="color-circle"></span>
     </label>
     

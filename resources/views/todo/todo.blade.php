@@ -14,12 +14,15 @@ Todoリスト
                 </svg>
             </button>
             <ul id="settingsMenu" class="settings-menu">
+                <br></br>
                 @if(Auth::check())
-                user name:{{ Auth::user()->name }}
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit">ログアウト</button>
-                </form>
+                <li>user name:{{ Auth::user()->name }}</li>
+                <li>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button class="settings-menu__logout" type="submit">ログアウト</button>
+                    </form>
+                </li>
                 @else
                 <li><a href="/login">ログイン</a></li>
                 <li><a href="/register">登録</a></li>
@@ -27,30 +30,33 @@ Todoリスト
             </ul>
         </div>
 
-        <div class="main-menu__container">
-            <button id="mainMenuBtn" class="main-menu__btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
-                <path fill="#888888" d="M3 8V7h17v1zm17 4v1H3v-1zM3 17h17v1H3z"/>
-                </svg>
-            </button>
-            <ul id="mainMenu" class="main-menu">
-                <li><a href="{{ route('todo.index') }}">今日明日７日のタスク</a></li>
-                <li><a href="{{ route('todo.upcomingTasks') }}">タスク一覧</a></li>
-                <li><a href="{{ route('todo.pastTasks') }}">終了したタスク</a></li>
-                <li><a href="">カレンダー</a></li>
-            </ul>
-        </div>
-
         <div class="search-menu_container">
             <button id="searchMenuBtn" class="search-menu__btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16">
             <path fill="currentColor" d="m11.271 11.978l3.872 3.873a.5.5 0 0 0 .708 0a.5.5 0 0 0 0-.708l-3.565-3.564c2.38-2.747 2.267-6.923-.342-9.532c-2.73-2.73-7.17-2.73-9.898 0s-2.728 7.17 0 9.9a6.96 6.96 0 0 0 4.949 2.05a.5.5 0 0 0 0-1a5.96 5.96 0 0 1-4.242-1.757a6.01 6.01 0 0 1 0-8.486a6.004 6.004 0 0 1 8.484 0a6.01 6.01 0 0 1 0 8.486a.5.5 0 0 0 .034.738"/>
             </svg>
             </button>
-            <form action="{{ route('todo.search') }}" method="post">
-                <input type="text" name="text" value="{{ old('text') }}" placeholder="タスクを検索">
-                <input type="submit" value="検索する">
+            <form id="searchForm" action="{{ route('todo.search') }}" class="search-menu__form hidden" method="post">
+                @csrf
+                <input id="searchFormText" class="search-menu__text" type="text" name="text" value="{{ old('text') }}" placeholder="タスクを検索">
+                <input type="submit" class="search-menu__submit" value="検索する">
             </form>
+        </div>
+            
+            <div class="main-menu__container">
+                <button id="mainMenuBtn" class="main-menu__btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                    <path fill="#888888" d="M3 8V7h17v1zm17 4v1H3v-1zM3 17h17v1H3z"/>
+                    </svg>
+                </button>
+                <ul id="mainMenu" class="main-menu">
+                    <br></br>
+                    <li><a href="{{ route('todo.index') }}">メインページ</a></li>
+                    <li><a href="{{ route('todo.upcomingTasks') }}">タスク一覧</a></li>
+                    <li><a href="{{ route('todo.pastTasks') }}">終了したタスク</a></li>
+                    <li><a href="">カレンダー</a></li>
+                </ul>
+            </div>
         </div>
     </div>
     

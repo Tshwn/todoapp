@@ -118,10 +118,10 @@ class TodoController extends Controller
     {
         $itemIds = $request->input('items', []);
         if (empty($itemIds)) {
-            return redirect()->back()->with('error', 'アイテムが選択されていません。');
+            return redirect()->back();
         }
         Board::whereIn('id', $itemIds)->delete();     
-        return redirect()->back()->with('success', '選択されたアイテムが削除されました。');
+        return redirect()->back();
     }
 
     public function upcomingTasks(Request $request)
