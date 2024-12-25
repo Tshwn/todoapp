@@ -74,35 +74,35 @@ Todoリスト
 <form action="{{ route('todo.deleteMultiple') }}" method="post">
         @csrf
         @method('DELETE')
-<ul id="tasks-today" class="tasks-list">
+<div id="tasks-today" class="tasks-list">
     @foreach ($todayPosts as $post)
-        <li class="tasks-list__item" style="background-color: {{ $post->color }}">
-            <input type="checkbox" name="items[]" id="itemToday_{{ $post->id }}" value="{{ $post->id }}">
-            <label for="itemToday_{{ $post->id }}">{{ $post->message }}  {{ $post->formatedDate }}</label>
-            <a href="{{ route('todo.edit', $post->id) }}">編集</a>
-        </li>
+        <div class="tasks-list__item" style="background-color: {{ $post->color }}">
+            <input type="checkbox" name="items[]" id="itemToday_{{ $post->id }}" class="tasks-list__item--checkbox" value="{{ $post->id }}">
+            <span class="tasks-list__item--content">{{ $post->message }}  {{ $post->formatedDate }}</span>
+            <a href="{{ route('todo.edit', $post->id) }}" class="tasks-list__item--edit">編集</a>
+        </div>
     @endforeach
-</ul>
+</div>
 
-<ul id="tasks-tomorrow" class="tasks-list hidden">
+<div id="tasks-tomorrow" class="tasks-list hidden">
     @foreach ($tomorrowPosts as $post)
-        <li class="tasks-list__item" style="background-color: {{ $post->color }}">
-            <input type="checkbox" id="itemTomorrow_{{ $post->id }}" value="{{ $post->message }}">
-            <label for="itemTomorrow_{{ $post->id }}">{{ $post->message }}  {{ $post->formatedDate }}</label>
-            <a href="{{ route('todo.edit', $post->id) }}">編集</a>
-        </li>
+        <div class="tasks-list__item" style="background-color: {{ $post->color }}">
+            <input type="checkbox" id="itemTomorrow_{{ $post->id }}" class="tasks-list__item--checkbox" value="{{ $post->message }}">
+            <span class="tasks-list__item--content">{{ $post->message }}  {{ $post->formatedDate }}</span>
+            <a href="{{ route('todo.edit', $post->id) }}" class="tasks-list__item--edit">編集</a>
+        </div>
     @endforeach
-</ul>
+</div>
 
-<ul id="tasks-thisWeek" class="tasks-list hidden">
+<div id="tasks-thisWeek" class="tasks-list hidden">
     @foreach ($thisWeekPosts as $post)
-        <li class="tasks-list__item" style="background-color: {{ $post->color }}">
-            <input type="checkbox" id="itemThisWeek_{{ $post->id }}" value="{{ $post->message }}">
-            <label for="itemThisWeek_{{ $post->id }}">{{ $post->message }} {{ $post->formatedDate }}</label>
-            <a href="{{ route('todo.edit', $post->id) }}">編集</a>
-        </li>
+        <div class="tasks-list__item" style="background-color: {{ $post->color }}">
+            <input type="checkbox" id="itemThisWeek_{{ $post->id }}" class="tasks-list__item--checkbox" value="{{ $post->message }}">
+            <span class="tasks-list__item--content">{{ $post->message }}  {{ $post->formatedDate }}</span>
+            <a href="{{ route('todo.edit', $post->id) }}" class="tasks-list__item--edit">編集</a>
+        </div>
     @endforeach
-</ul>
+</div>
 
 <button type="submit" id="hiddenDeleteButton" style="display:none">削除</button>
 </form>

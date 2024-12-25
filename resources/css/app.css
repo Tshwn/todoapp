@@ -176,9 +176,29 @@ header {
     display: none;
   }
 
-.tasks-list li {
-    margin: 10px 0;
+.tasks-list__item {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    margin: 10px auto;
     border-radius: 20px;
+}
+
+.tasks-list__item--checkbox {
+    margin: 6px 0 0 8px;
+}
+
+.tasks-list__item--edit {
+    background-color: black;  /* ボタンの背景色 */
+    padding: 1px;
+    color: white;               /* 文字色 */
+    border: none;               /* ボタンの枠線をなしに */
+    border-radius: 6px;         /* 角を丸く */
+    font-size: 16px;            /* 文字の大きさ */
+    cursor: pointer;            /* ポインタがボタンの上に来たときにカーソルが指に変わる */
+    transition: background-color 0.3s ease;  /* 背景色が変わるアニメーション */
+    margin: 2px;
 }
 
 .tasks-delete__btn {
