@@ -2,84 +2,320 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
-
-/* body {
-    width: 700px;
-    height: 1000px;
-    margin: 0 auto;
-}
-h1,h3{
-    color:gray;
-    text-align:center;
+body {
+    height:100%;
+    max-height: 100%;
+    position: relative;
+    z-index:1;
 }
 
-ul {
+header {
+    height: 125px;
     display: flex;
-    list-style-type: none;
-}
-.input_ul {
-    display: flex;
-    flex-flow: column;
-}
-.input_ul li{
-    margin:0 auto;
-    display: flex;
-    flex-flow: column;
-    width:150px;
-}
-.input_ul button {
-    margin:0 auto;
+    flex-direction: column;
 }
 
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    width:100%;
+    padding:20px;
+    margin-bottom: 30px;
+    background-color:white;
+}
 
-li {
-    flex:1;
+.settings-menu__container {
+    height:1%;
+    width: 100%;
+    position:relative;
+    overflow: hidden;
+}
+.settings-menu__btn {
+    position: fixed;
+    top:0;
+    left:0;
+    padding: 20px;
+}
+.settings-menu {
+    display: flex;
+    flex-direction: column;
+    position:fixed;
+    text-align: center;
+    width:100%;
+    left: -100%;
+    transition:.5s ease-in-out;
+    border:solid 1px #121212;
+    margin-left:0;
+    z-index:100;
+}
+
+.settings-menu li {
+    width: 90%;
+    font-size:20px;
+    padding: 10px;
+    margin: 10px auto 10px;
+    border: solid 1px #00ff7f;
+}
+.settings-menu.open {
+    background-color: #b0c4de;
+    height: 90vh;
+    width:70vw;
+    left:0;
+    bottom: 0;
+}
+.settings-menu__logout {
+        background-color: gray;  /* ボタンの背景色 */
+        color: white;               /* 文字色 */
+        padding: 10px 20px;         /* ボタン内の余白 */
+        border: none;               /* ボタンの枠線をなしに */
+        border-radius: 5px;         /* 角を丸く */
+        font-size: 16px;            /* 文字の大きさ */
+        cursor: pointer;            /* ポインタがボタンの上に来たときにカーソルが指に変わる */
+        transition: background-color 0.3s ease;  /* 背景色が変わるアニメーション */
+}
+
+.search-menu__btn {
+    position: fixed;
+    top:0;
+    right:50px;
+    padding: 20px;
+}
+.search-menu__text {
+    position: fixed;
+    top:10px;
+    right:60px;
+    margin-bottom: 0;
+    height: 30px;
+    width: 120px;
+}
+.search-menu__submit {
+    position: fixed;
+    top:40px;
+    right:60px;
+    padding: 0;
+    margin-bottom: 0;
+    font-size: 15px;
+    border: solid 1px #121212;
+}
+.main-menu__container {
+    height:1%;
+    width: 100%;
+    position:relative;
+    overflow: hidden;
+}
+.main-menu__btn {
+    position: fixed;
+    top:0;
+    right:0;
+    padding: 20px;
+}
+.main-menu {
+    display: flex;
+    flex-direction: column;
+    position:fixed;
+    text-align: center;
+    width:100%;
+    right: -100%;
+    transition:.5s ease-in-out;
+    border:solid 1px #121212;
+    margin-right:0;
+    z-index:100;
+}
+.main-menu.open {
+    background-color: #b0c4de;
+    height: 95vh;
+    width:50vw;
+    right:0;
+    bottom: 0;
+}
+.main-menu li {
+    width: 80%;
+    font-size:20px;
+    padding: 10px;
+    margin: 10px auto;
+    border: solid 1px #00ff7f;
+}
+
+.date-tabs {
+    position: fixed;
+    width: 100%;
+    top:70px;
+    padding:10px 0;
+    text-align: center;
+    border:solid 2px #121212;
+}
+
+.date-tabs__btn {
+    margin:0 20px;
+    font-size: 20px;
+    border-bottom:solid 1px rgba(0,0,0,0);
+    transition:.8s;
+
+    &:hover {
+        border-bottom:solid 2px rgba(255,55,255,1);
+    }
+}
+
+.active {
+    border-bottom:solid 3px rgba(255,55,255,1);
+}
+
+.tasks-list {
+    position: fixed;
+    width: 100%;
+    height: 60vh;
+    text-align: center;
     padding: 5px;
+    margin: 0 auto;
+    border: solid 2px rgba(0,0,0,1); /*タスクの枠線 */
+    overflow: scroll;
+    z-index: -1;
 }
-p {
-    margin-right: 8px;
+
+.tasks-list::-webkit-scrollbar {
+    display: none;
+  }
+
+.tasks-list__item {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    margin: 10px auto;
+    border-radius: 20px;
 }
-.checkbox {
-    text-align:left;
+
+.tasks-list__item--checkbox {
+    margin: 6px 0 0 8px;
 }
-button {
-    margin: 0 4px;
+
+.tasks-list__item--edit {
+    background-color: black;  /* ボタンの背景色 */
+    padding: 1px;
+    color: white;               /* 文字色 */
+    border: none;               /* ボタンの枠線をなしに */
+    border-radius: 6px;         /* 角を丸く */
+    font-size: 16px;            /* 文字の大きさ */
+    cursor: pointer;            /* ポインタがボタンの上に来たときにカーソルが指に変わる */
+    transition: background-color 0.3s ease;  /* 背景色が変わるアニメーション */
+    margin: 2px;
+}
+
+.tasks-delete__btn {
+    position: fixed;
+    bottom:0;
+    left:0;
+    padding: 20px;
+}
+.tasks-add__btn {
+    position: fixed;
+    bottom:0;
+    right:0;
+    padding: 20px;
+}
+
+.tasks-add-form__container {
+    height:1%;
+    width: 100%;
+    position:relative;
+    overflow: hidden;
+}
+
+
+.tasks-add-form {
+    display: flex;
+    flex-direction: column;
+    position:fixed;
+    width:100%;
+    bottom: -100%;
+    transition:.5s ease-in-out;
+    border:solid 1px #121212;
+    margin-bottom:0;
+    z-index:100;
+}
+
+.tasks-add-form.open {
+    background-color: #b0c4de;
+    height: 60vh;
+    bottom: 0;
+}
+
+.tasks-add-form__item {
+    margin: 5px auto;
+    text-align: center;
+}
+
+.tasks-add-form__text {
+    margin-top:20px;
+    height: 30px;
+}
+
+.tasks-add-form__date {
+    height: 30px;
+}
+
+.tasks-add-form__submit {
+    width: 200px;
+    font-size:20px;
+    margin: 20px auto;
+    padding:10px 0;
+    border: solid 2px #121212;
+}
+
+.tasks-sort-form {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row-reverse;
+    height: 30px;
+    font-size: 15px;
+}
+.tasks-sort-form select {
+    width: 100px;
+    padding: 0;
+    font-size: 15px;
+}
+
+.tasks-sort-form__submit {
+    height: 30px;
+    background-color: gray;  /* ボタンの背景色 */
+    color: white;               /* 文字色 */
+    padding: 8px;        /* ボタン内の余白 */
+    margin: 0;
+    border: none;               /* ボタンの枠線をなしに */
+    border-radius: 5px;         /* 角を丸く */
+    font-size: 15px;            /* 文字の大きさ */
+    cursor: pointer;            /* ポインタがボタンの上に来たときにカーソルが指に変わる */
+    transition: background-color 0.3s ease;  /* 背景色が変わるアニメーション */
+}
+
+.color-radio {
+    display: none;
+}
+
+.color-circle {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
     cursor: pointer;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    padding: 8px 16px;
-    align-items: center;
-}
+    transition: border-color 0.3s, transform 0.3s;
+  }
 
+  /* ラジオボタンが選択されていないときの色を表示 */
+  .color-radio[value="1"] + .color-circle {
+    background-color: #ff6347;
+  }
+  .color-radio[value="2"] + .color-circle {
+    background-color: #00ff7f;
+  }
+  .color-radio[value="3"] + .color-circle {
+    background-color: #D3D3D3;
+  }
 
-.input-area {
-    text-align: center;
-    margin-bottom: 1px;
-}
-
-.input-area button {
-    width:100px;
-}
-
-.list-area {
-    background-color: aqua;
-    text-align: center;
-    border-radius: 16px;
-    margin: 3px;
-    padding: 3px;
-}
-
-
-footer {
-position: fixed;
-bottom: 0;
-right: 0;
-width: 100%;
-text-align: center;
-padding: 10px;
-background-color: #333;
-color:white;
-} */
+  /* ラジオボタンが選択されたときの枠線を太く */
+  .color-radio:checked + .color-circle {
+    border-color: #333;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);  /* 少し拡大することで、選択された感覚を強調 */
+  }

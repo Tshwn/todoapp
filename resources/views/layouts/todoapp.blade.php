@@ -7,10 +7,9 @@
     <title>@yield('title')</title>
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com
     /bootstrap/4.3.1/css/bootstrap.min.css"> -->
-    <!-- @vite(['resources/css/app.css', 'resources/js/app.js']) -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
-    <h1>@yield('title')</h1>
     <header>@yield('header')</header>
     <main>@yield('main')</main>
     <footer>@yield('footer')</footer>
