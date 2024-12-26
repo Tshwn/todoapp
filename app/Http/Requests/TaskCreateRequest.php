@@ -25,7 +25,6 @@ class TaskCreateRequest extends FormRequest
             'user_id' => 'required,exists:users,id',
             'message' => 'required',
             'due_date' => 'date',
-            'color' => 'required',
             // 'color' => 'required|regex:/^#([a-f0-9]{6}|[a-f0-9]{3})$/i'
         ];
     }
@@ -37,7 +36,6 @@ class TaskCreateRequest extends FormRequest
             'message.required' => 'メッセージは必ず入力してください。',
             'due_date.date' => '日付で入力してください',
             'color.required' => '必ず入力してください',
-            'color.regex' => 'hex形式で入力してください',
         ];
     }
 }

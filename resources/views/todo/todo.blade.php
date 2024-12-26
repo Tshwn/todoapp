@@ -71,6 +71,22 @@ Todoリスト
     <div id="inputFormContainer" class="tasks-add-form__container">
     @include('todo.create')
     </div>
+
+    <form method="GET" action="{{ route('todo.index') }}" class="tasks-sort-form">
+    @csrf
+        <select name="sort_by" id="sortBy">
+            <option value="dateAsc">日付(昇順)</option>
+            <option value="dateDesc">日付(降順)</option>
+
+            <option value="createdAsc">作成順(昇順)</option>
+            <option value="createdDesc">作成順(降順)</option>
+            
+            <option value="colorAsc">色(赤上)</option>
+            <option value="colorDesc">色(白上)</option>  
+        </select>
+        <input class="tasks-sort-form__submit" type="submit" value="ソートする">
+    </form>
+
 <form action="{{ route('todo.deleteMultiple') }}" method="post">
         @csrf
         @method('DELETE')

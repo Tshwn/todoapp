@@ -262,6 +262,32 @@ header {
     border: solid 2px #121212;
 }
 
+.tasks-sort-form {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row-reverse;
+    height: 30px;
+    font-size: 15px;
+}
+.tasks-sort-form select {
+    width: 100px;
+    padding: 0;
+    font-size: 15px;
+}
+
+.tasks-sort-form__submit {
+    height: 30px;
+    background-color: gray;  /* ボタンの背景色 */
+    color: white;               /* 文字色 */
+    padding: 8px;        /* ボタン内の余白 */
+    margin: 0;
+    border: none;               /* ボタンの枠線をなしに */
+    border-radius: 5px;         /* 角を丸く */
+    font-size: 15px;            /* 文字の大きさ */
+    cursor: pointer;            /* ポインタがボタンの上に来たときにカーソルが指に変わる */
+    transition: background-color 0.3s ease;  /* 背景色が変わるアニメーション */
+}
+
 .color-radio {
     display: none;
 }
@@ -277,13 +303,13 @@ header {
   }
 
   /* ラジオボタンが選択されていないときの色を表示 */
-  .color-radio[value="#ff6347"] + .color-circle {
+  .color-radio[value="1"] + .color-circle {
     background-color: #ff6347;
   }
-  .color-radio[value="#00ff7f"] + .color-circle {
+  .color-radio[value="2"] + .color-circle {
     background-color: #00ff7f;
   }
-  .color-radio[value="#D3D3D3"] + .color-circle {
+  .color-radio[value="3"] + .color-circle {
     background-color: #D3D3D3;
   }
 

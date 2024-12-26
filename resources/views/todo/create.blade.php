@@ -4,17 +4,17 @@
 
   <div class="tasks-add-form__color tasks-add-form__item">
     <label>
-      <input type="radio" name="color" value="#ff6347" class="color-radio" checked/>
+      <input type="radio" name="colors_id" value="1" class="color-radio tasks-add-form__item" checked/>
       <span class="color-circle"></span>
     </label>
     
     <label>
-      <input type="radio" name="color" value="#00ff7f" class="color-radio tasks-add-form__item" />
+      <input type="radio" name="colors_id" value="2" class="color-radio tasks-add-form__item" />
       <span class="color-circle"></span>
     </label>
-    
+ 
     <label>
-      <input type="radio" name="color" value="#D3D3D3" class="color-radio tasks-add-form__item" />
+      <input type="radio" name="colors_id" value="3" class="color-radio tasks-add-form__item" />
       <span class="color-circle"></span>
     </label>
   </div>

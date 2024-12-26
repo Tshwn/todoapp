@@ -35,6 +35,34 @@ class TodoController extends Controller
             $tomorrowPosts = Board::UserPosts($user)->TomorrowPosts()->get();
             $thisWeekPosts = Board::UserPosts($user)->ThisWeekPosts()->get();
         }
+
+        $sortBy = $request->input('sort_by');
+        if($sortBy === 'dateAsc'):
+            $todayPosts = Board::UserPosts($user)->orderBy('due_date','asc')->TodayPosts()->get();
+            $tomorrowPosts = Board::UserPosts($user)->orderBy('due_date','asc')->TomorrowPosts()->get();
+            $thisWeekPosts = Board::UserPosts($user)->orderBy('due_date','asc')->ThisWeekPosts()->get();
+        elseif($sortBy === 'dateDesc'):
+            $todayPosts = Board::UserPosts($user)->orderBy('due_date','desc')->TodayPosts()->get();
+            $tomorrowPosts = Board::UserPosts($user)->orderBy('due_date','desc')->TomorrowPosts()->get();
+            $thisWeekPosts = Board::UserPosts($user)->orderBy('due_date','desc')->ThisWeekPosts()->get();
+        elseif($sortBy === 'createdAsc'):
+            $todayPosts = Board::UserPosts($user)->orderBy('created_at','asc')->TodayPosts()->get();
+            $tomorrowPosts = Board::UserPosts($user)->orderBy('created_at','asc')->TomorrowPosts()->get();
+            $thisWeekPosts = Board::UserPosts($user)->orderBy('created_at','asc')->ThisWeekPosts()->get();
+        elseif($sortBy === 'createdDesc'):
+            $todayPosts = Board::UserPosts($user)->orderBy('created_at','desc')->TodayPosts()->get();
+            $tomorrowPosts = Board::UserPosts($user)->orderBy('created_at','desc')->TomorrowPosts()->get();
+            $thisWeekPosts = Board::UserPosts($user)->orderBy('created_at','desc')->ThisWeekPosts()->get();
+        elseif($sortBy === 'colorAsc'):
+            $todayPosts = Board::UserPosts($user)->orderBy('colors_id','asc')->TodayPosts()->get();
+            $tomorrowPosts = Board::UserPosts($user)->orderBy('colors_id','asc')->TomorrowPosts()->get();
+            $thisWeekPosts = Board::UserPosts($user)->orderBy('colors_id','asc')->ThisWeekPosts()->get();
+        elseif($sortBy === 'colorDesc'):
+            $todayPosts = Board::UserPosts($user)->orderBy('colors_id','desc')->TodayPosts()->get();
+            $tomorrowPosts = Board::UserPosts($user)->orderBy('colors_id','desc')->TomorrowPosts()->get();
+            $thisWeekPosts = Board::UserPosts($user)->orderBy('colors_id','desc')->ThisWeekPosts()->get();
+        endif;
+
         return view('todo.todo',['today' => $today,'todayPosts' => $todayPosts,'tomorrowPosts' => $tomorrowPosts,'thisWeekPosts' => $thisWeekPosts,'user' => $user,'sort' => $sort]);
     }
 
@@ -55,12 +83,20 @@ class TodoController extends Controller
     use AuthorizesRequests;
     public function store(TaskCreateRequest $request)
     {
+        if($request->input('colors_id') === '1') {
+            $color = "#ff6347";
+        } elseif($request->input('colors_id') === '2') {
+            $color = "#00ff7f";
+        } elseif($request->input('colors_id') === '3') {
+            $color = "#D3D3D3";
+        }
         $this->authorize('create', Todo::class);
         $param = [
             'user_id' => auth()->id(),
             'message' => $request->input('message'),
             'due_date' => $request->input('due_date'),
-            'color' => $request->input('color'),
+            'colors_id' => $request->input('colors_id'),
+            'color' => $color,
         ];
         Board::create($param);
         $user = Auth::user();
