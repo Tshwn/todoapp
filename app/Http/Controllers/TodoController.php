@@ -90,6 +90,11 @@ class TodoController extends Controller
         } elseif($request->input('colors_id') === '3') {
             $color = "#D3D3D3";
         }
+        // $colors = [
+        //     '1' => '#ff6347',
+        //     '2' => '#00ff7f',
+        //     '3' => '#D3D3D3',
+        // ];
         $this->authorize('create', Todo::class);
         $param = [
             'user_id' => auth()->id(),
@@ -97,6 +102,7 @@ class TodoController extends Controller
             'due_date' => $request->input('due_date'),
             'colors_id' => $request->input('colors_id'),
             'color' => $color,
+            // 'color' => $colors[$request->input('colors_id')],
         ];
         Board::create($param);
         $user = Auth::user();
