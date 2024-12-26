@@ -15,7 +15,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        User::class => TodoPolicy::class, // PostモデルにPostPolicyを関連付け
+        Board::class => TodoPolicy::class, // BoardモデルにTodoPolicyを関連付け
     ];
 
     public function boot()
@@ -29,6 +29,5 @@ class AuthServiceProvider extends ServiceProvider
                 return false;
             }
         });
-
     }
 }
