@@ -1,57 +1,31 @@
-<style>
-    .color-radio {
-    display: none;
-  }
+@extends('layouts.todoapp')
+<button class="tasks-edit-back__button" onclick="window.history.back();">
+  戻る
+</button>
+<form action="{{ route('todo.update', $post->id) }}" id="editForm" class="tasks-edit-form" method="post">
+  @csrf
+  @method('PUT')
+  <input type="text" class="tasks-edit-form__text tasks-edit-form__item" name="message" value="{{ $post->message }}">
 
-  /* 色付き丸のスタイル */
-  .color-circle {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: inline-block;
-    margin: 5px;
-    cursor: pointer;
-    border: 2px solid transparent; /* ボーダーを透明にして、選択された時にのみ変化をつける */
-    transition: transform 0.3s ease, border 0.2s ease;
-  }
+  <div class="tasks-edit-form__color tasks-edit-form__item">
+    <label>
+      <input type="radio" name="colors_id" value="1" class="color-radio tasks-edit-form__item" checked/>
+      <span class="color-circle"></span>
+    </label>
+    
+    <label>
+      <input type="radio" name="colors_id" value="2" class="color-radio tasks-edit-form__item" />
+      <span class="color-circle"></span>
+    </label>
+ 
+    <label>
+      <input type="radio" name="colors_id" value="3" class="color-radio tasks-edit-form__item" />
+      <span class="color-circle"></span>
+    </label>
+  </div>
 
-  /* ラジオボタンが選択されたときに円に変化をつける */
-  .color-radio:checked + .color-circle {
-    transform: scale(1.2);  /* クリック時に丸が少し大きくなる */
-    border: 2px solid #000; /* 選択された時に周りに境界線をつける */
-  }
-
-  /* ラベルにホバーしたときのエフェクト */
-  .color-circle:hover {
-    transform: scale(1.1);
-  }
-</style>
-
-<form action="{{ route('todo.update',$form->id) }}" method="post">
-    @csrf
-    @method('put')
-    <p>{{ $form->id }}</p>
-    <input type="hidden" name="id" value="{{ $form->id }}">
-    <p>やること:<input type="text" name="message" value="{{ $form->message }}"></p>
-    <li>
-          <!-- Red -->
-  <label>
-    <input type="radio" name="color" value="#FF0000" class="color-radio" />
-    <span class="color-circle" style="background-color: #FF0000;"></span>
-  </label>
-  
-  <!-- Green -->
-  <label>
-    <input type="radio" name="color" value="#00FF00" class="color-radio" />
-    <span class="color-circle" style="background-color: #00FF00;"></span>
-  </label>
-  
-  <!-- Blue -->
-  <label>
-    <input type="radio" name="color" value="#D3D3D3" class="color-radio" />
-    <span class="color-circle" style="background-color: #D3D3D3;"></span>
-  </label>
-    </li>
-    <p>やる日:<input type="date" name="due_date" value="{{ $form->due_date }}"></p>
-    <input type="submit" value="更新する">
+  <input type="date" class="tasks-edit-form__date tasks-edit-form__item" name="due_date" value="{{ $post->due_date }}">
+  <button class="tasks-edit-form__submit">
+    タスクを変更する
+  </button>
 </form>

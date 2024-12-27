@@ -16,6 +16,9 @@ class TodoPolicy
     }
 
     public function create(User $user) {
-        return true;
+        if($user) {
+            return true;
+        }
+        return false;
     }
 }
