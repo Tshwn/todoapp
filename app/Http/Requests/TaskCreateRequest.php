@@ -23,19 +23,21 @@ class TaskCreateRequest extends FormRequest
     {
         return [
             'user_id' => 'required,exists:users,id',
-            'message' => 'required',
-            'due_date' => 'date',
-            // 'color' => 'required|regex:/^#([a-f0-9]{6}|[a-f0-9]{3})$/i'
+            'message' => 'required|max:20',
+            'due_date' => 'required|date|after_or_equal:today',
         ];
     }
 
     public function messages()
     {
         return [
+            'user_id.required' => '投稿にはユーザーIDが必要です',
             'user_id.exists' => 'ユーザーIDが存在しません。',
-            'message.required' => 'メッセージは必ず入力してください。',
+            'message.required' => 'タスクは必ず入力してください。',
+            'message.max' => '20文字以内で入力してください',
+            'due_date.required' => '日付は必ず入力してください',
             'due_date.date' => '日付で入力してください',
-            'color.required' => '必ず入力してください',
+            'due_date.after_or_equal' => '日付は今日か今日以降で入力してください',
         ];
     }
 }

@@ -123,7 +123,7 @@ header {
 }
 .main-menu.open {
     background-color: #b0c4de;
-    height: 95vh;
+    height: 96vh;
     width:50vw;
     right:0;
     bottom: 0;
@@ -160,6 +160,14 @@ header {
     border-bottom:solid 3px rgba(255,55,255,1);
 }
 
+.main-top__space {
+    display: flex;
+}
+.show-error {
+    margin: 0 auto;
+    font-size: 12px;
+}
+
 .tasks-list {
     position: fixed;
     width: 100%;
@@ -167,7 +175,7 @@ header {
     text-align: center;
     padding: 5px;
     margin: 0 auto;
-    border: solid 2px rgba(0,0,0,1); /*タスクの枠線 */
+    /* border: solid 2px rgba(0,0,0,1); タスクの枠線 */
     overflow: scroll;
     z-index: -1;
 }
@@ -280,12 +288,13 @@ header {
     background-color: gray;  /* ボタンの背景色 */
     color: white;               /* 文字色 */
     padding: 8px;        /* ボタン内の余白 */
-    margin: 0;
+    margin: 2px;
     border: none;               /* ボタンの枠線をなしに */
-    border-radius: 5px;         /* 角を丸く */
+    border-radius: 15px;         /* 角を丸く */
     font-size: 15px;            /* 文字の大きさ */
     cursor: pointer;            /* ポインタがボタンの上に来たときにカーソルが指に変わる */
     transition: background-color 0.3s ease;  /* 背景色が変わるアニメーション */
+    line-height: 10px;
 }
 
 .color-radio {
@@ -319,3 +328,67 @@ header {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     transform: scale(1.1);  /* 少し拡大することで、選択された感覚を強調 */
   }
+
+
+  .tasks-edit-back__button {
+    height: 40px;
+    background-color: gray;  /* ボタンの背景色 */
+    color: white;               /* 文字色 */
+    padding: 0 40px;           /* 上下の余白を0にして横幅のみ調整 */
+    margin: 20px;
+    border: none;               /* ボタンの枠線をなしに */
+    border-radius: 5px;         /* 角を丸く */
+    font-size: 20px;            /* 文字の大きさ */
+    cursor: pointer;            /* ポインタがボタンの上に来たときにカーソルが指に変わる */
+    transition: background-color 0.3s ease;  /* 背景色が変わるアニメーション */
+    line-height: 30px;          /* 文字を縦方向に中央揃え */
+  }
+  .tasks-edit-form__container {
+    height:1%;
+    width: 100%;
+    position:relative;
+    overflow: hidden;
+}
+
+
+.tasks-edit-form {
+    display: flex;
+    flex-direction: column;
+    position:fixed;
+    width:100%;
+    /* bottom: -100%; */ /* アニメーションがないから一旦無効 */
+    top: 40%; /* 追加した */
+    background-color: #b0c4de; /* 追加した */
+    transition:.5s ease-in-out;
+    border:solid 1px #121212;
+    margin-bottom:0;
+    z-index:100;
+}
+
+.tasks-edit-form.open {
+    background-color: #b0c4de;
+    height: 60vh;
+    bottom: 0;
+}
+
+.tasks-edit-form__item {
+    margin: 5px auto;
+    text-align: center;
+}
+
+.tasks-edit-form__text {
+    margin-top:20px;
+    height: 30px;
+}
+
+.tasks-edit-form__date {
+    height: 30px;
+}
+
+.tasks-edit-form__submit {
+    width: 200px;
+    font-size:20px;
+    margin: 20px auto;
+    padding:10px 0;
+    border: solid 2px #121212;
+}
