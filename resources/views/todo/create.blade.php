@@ -1,41 +1,26 @@
-<div class="input_div">
-<form action="{{ route('todo.index') }}" method="post">
-<ul class="input_ul">
-    @csrf
-    
-    <li>
-        やること:<input type="text" name="message" value="{{ old('message') }}">
-    </li>
+<form action="{{ route('todo.index') }}" id="inputForm" class="tasks-add-form" method="post">
+  @csrf
+  <input type="text" class="tasks-add-form__text tasks-add-form__item" name="message" value="{{ old('message') }}">
 
-    <li>
-          <!-- Red -->
-  <label>
-    <input type="radio" name="color" value="#FF0000" class="color-radio" checked/>
-    <span class="color-circle" style="background-color: #FF0000;"></span>
-  </label>
-  
-  <!-- Green -->
-  <label>
-    <input type="radio" name="color" value="#00FF00" class="color-radio" />
-    <span class="color-circle" style="background-color: #00FF00;"></span>
-  </label>
-  
-  <!-- Blue -->
-  <label>
-    <input type="radio" name="color" value="#D3D3D3" class="color-radio" />
-    <span class="color-circle" style="background-color: #D3D3D3;"></span>
-  </label>
-    </li>
+  <div class="tasks-add-form__color tasks-add-form__item">
+    <label>
+      <input type="radio" name="colors_id" value="1" class="tasks-add-form__radio tasks-add-form__item" checked/>
+      <span class="color-circle"></span>
+    </label>
     
-    <li>
-        やる日:<input type="date" name="due_date" value="{{ old('due_date') }}">
-    </li>
+    <label>
+      <input type="radio" name="colors_id" value="2" class="tasks-add-form__radio tasks-add-form__item" />
+      <span class="color-circle"></span>
+    </label>
+ 
+    <label>
+      <input type="radio" name="colors_id" value="3" class="tasks-add-form__radio tasks-add-form__item" />
+      <span class="color-circle"></span>
+    </label>
+  </div>
 
-    <li>
-        <button>
-        追加する
-        </button>
-    </li>
-</ul>
+  <input type="date" class="tasks-add-form__date tasks-add-form__item" name="due_date" value="{{ $today }}">
+  <button class="tasks-add-form__submit">
+    タスクを追加する
+  </button>
 </form>
-</div>

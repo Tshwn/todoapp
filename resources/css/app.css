@@ -1,85 +1,403 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-
-
-
-/* body {
-    width: 700px;
-    height: 1000px;
-    margin: 0 auto;
-}
-h1,h3{
-    color:gray;
-    text-align:center;
-}
-
-ul {
+/* align-itemsは縦の中央ぞろえ */
+/* justify-content:centerは横の中央ぞろえ */
+.header-navs {
     display: flex;
-    list-style-type: none;
-}
-.input_ul {
-    display: flex;
-    flex-flow: column;
-}
-.input_ul li{
-    margin:0 auto;
-    display: flex;
-    flex-flow: column;
-    width:150px;
-}
-.input_ul button {
-    margin:0 auto;
-}
-
-
-li {
-    flex:1;
-    padding: 5px;
-}
-p {
-    margin-right: 8px;
-}
-.checkbox {
-    text-align:left;
-}
-button {
-    margin: 0 4px;
-    cursor: pointer;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    padding: 8px 16px;
+    border: 1px solid;
     align-items: center;
+    margin: 5px;
+    justify-content: space-between;
+
+    .header-navs__box--r {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .search-menu__form {
+            width: 180px;
+            height: 46px;
+            .search-menu__text {
+                width: 120px;
+            }
+            .search-menu__submit {
+                font-size: 13px;
+                width: 50px;
+                border: 1px solid black;
+            }
+        }
+    }
+    .header-navs__btn {
+        width: 46px;
+        height: 46px;
+    }
+
+    /* ここから設定メニュー一覧のアニメーション*/
+    .settings-menu__container {
+        height: 1%;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+    .settings-menu {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        text-align: center;
+        width: 100%;
+        left: -100%;
+        transition: 0.5s ease-in-out;
+        border: solid 1px #121212;
+        z-index: 100;
+    }
+
+    .settings-menu li {
+        width: 90%;
+        font-size: 20px;
+        padding: 10px;
+        margin: 10px auto;
+        border: solid 1px #191970;
+    }
+    .settings-menu.open {
+        background-color: #b0c4de;
+        height: 90vh;
+        width: 50vw;
+        left: 0;
+        bottom: 0;
+    }
+    .settings-menu__logout {
+        background-color: gray; /* ボタンの背景色 */
+        color: white; /* 文字色 */
+        padding: 10px 20px; /* ボタン内の余白 */
+        border: none; /* ボタンの枠線をなしに */
+        border-radius: 5px; /* 角を丸く */
+        font-size: 16px; /* 文字の大きさ */
+        cursor: pointer; /* ポインタがボタンの上に来たときにカーソルが指に変わる */
+        transition: background-color 0.3s ease; /* 背景色が変わるアニメーション */
+    }
+    /* /ここまで設定メニュー一覧のアニメーション*/
+
+    /* ここからメインメニュー一覧のアニメーション */
+    .main-menu__container {
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+    .main-menu {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        text-align: center;
+        width: 100%;
+        right: -100%;
+        transition: 0.5s ease-in-out;
+        border: solid 1px #121212;
+        margin-right: 0;
+        z-index: 100;
+    }
+    .main-menu.open {
+        background-color: #b0c4de;
+        height: 100vh;
+        width: 40vw;
+        right: 0;
+        bottom: 0;
+    }
+    .main-menu li {
+        width: 80%;
+        font-size: 20px;
+        padding: 10px;
+        margin: 10px auto;
+        border: solid 1px #191970;
+    }
+    /* ここまでメインメニュー一覧のアニメーション */
 }
 
+.date-tabs {
+    display: flex;
+    align-items: center;
+    width: 40%;
+    height: 70px;
+    margin: 10px auto;
+    font-size: 30px;
+    justify-content: space-between;
 
-.input-area {
-    text-align: center;
-    margin-bottom: 1px;
+    .date-tabs__btn {
+        border: 1px solid black;
+        width: 100px;
+        height: 60px;
+    }
+    .active {
+        border-bottom: solid 3px RGB(135, 206, 235, 0.9);
+    }
 }
 
-.input-area button {
-    width:100px;
+.main-content__sup {
+    display: flex;
+    justify-content: space-between;
+
+    .show-error {
+        margin-left: 100px;
+        width: 300px;
+        text-align: center;
+    }
+    .tasks-sort-form {
+        margin-right: 100px;
+        display: flex;
+        flex-direction: row-reverse;
+        gap: 10px;
+
+        .tasks-sort-form__submit {
+            width: 100px;
+        }
+    }
 }
 
-.list-area {
-    background-color: aqua;
-    text-align: center;
-    border-radius: 16px;
-    margin: 3px;
-    padding: 3px;
+.tasks-list__form {
+    margin: 10px;
+    .tasks-list {
+        height: 600px;
+        overflow: scroll;
+        .tasks-list__item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 30px;
+            margin: 10px 5px;
+            padding: 20px;
+            border-radius: 20px;
+
+            .tasks-list__item--content {
+                font-weight: 480;
+            }
+            .tasks-list__item--edit {
+                border: 1px solid black;
+                margin: 5px;
+            }
+        }
+    }
 }
 
+.bottom-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px;
 
-footer {
-position: fixed;
-bottom: 0;
-right: 0;
-width: 100%;
-text-align: center;
-padding: 10px;
-background-color: #333;
-color:white;
-} */
+    .bottom-actions__btn {
+        border: 1px solid black;
+        width: 46px;
+        height: 46px;
+    }
+}
+
+.tasks-add-form__container {
+    height: 1%;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+
+    .tasks-add-form {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        width: 100%;
+        bottom: -100%;
+        transition: 0.5s ease-in-out;
+        border: solid 1px #121212;
+        margin-bottom: 0;
+        z-index: 100;
+
+        .tasks-add-form__item {
+            margin: 5px auto;
+            text-align: center;
+        }
+        .tasks-add-form__text {
+            margin-top: 20px;
+            height: 30px;
+        }
+        .tasks-add-form__date {
+            height: 30px;
+        }
+        .tasks-add-form__submit {
+            width: 200px;
+            font-size: 20px;
+            margin: 20px auto;
+            padding: 10px 0;
+            border: solid 2px #121212;
+        }
+
+        .tasks-add-form__radio {
+            display: none;
+        }
+
+        .color-circle {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid #ccc;
+            cursor: pointer;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+
+        /* ラジオボタンが選択されていないときの色を表示 */
+        .tasks-add-form__radio[value="1"] + .color-circle {
+            background-color: #ff6347;
+        }
+        .tasks-add-form__radio[value="2"] + .color-circle {
+            background-color: #00ff7f;
+        }
+        .tasks-add-form__radio[value="3"] + .color-circle {
+            background-color: #d3d3d3;
+        }
+
+        /* ラジオボタンが選択されたときの枠線を太く */
+        .tasks-add-form__radio:checked + .color-circle {
+            border-color: #333;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            transform: scale(
+                1.1
+            ); /* 少し拡大することで、選択された感覚を強調 */
+        }
+    }
+    .tasks-add-form.open {
+        background-color: #b0c4de;
+        height: 50vh;
+        bottom: 0;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .search-menu__form {
+        width: 180px;
+        height: 46px;
+        .search-menu__text {
+            width: 120px;
+        }
+        .search-menu__submit {
+            font-size: 13px;
+            width: 50px;
+        }
+    }
+
+    /* ここから設定メニュー一覧のアニメーション*/
+    .settings-menu__container {
+        height: 1%;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+        .settings-menu {
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            text-align: center;
+            width: 100%;
+            left: -100%;
+            transition: 0.5s ease-in-out;
+            border: solid 1px #121212;
+            z-index: 100;
+        }
+
+        .settings-menu li {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+        .settings-menu.open {
+            background-color: #b0c4de;
+            height: 85vh;
+            width: 50vw;
+            left: 0;
+            bottom: 0;
+        }
+        .settings-menu__logout {
+            background-color: gray; /* ボタンの背景色 */
+            color: white; /* 文字色 */
+            padding: 10px 20px; /* ボタン内の余白 */
+            border: none; /* ボタンの枠線をなしに */
+            border-radius: 5px; /* 角を丸く */
+            font-size: 16px; /* 文字の大きさ */
+            cursor: pointer; /* ポインタがボタンの上に来たときにカーソルが指に変わる */
+            transition: background-color 0.3s ease; /* 背景色が変わるアニメーション */
+        }
+    }
+    /* /ここまで設定メニュー一覧のアニメーション*/
+
+    /* ここからメインメニュー一覧のアニメーション */
+    .main-menu__container {
+        .main-menu {
+            border: solid 1px #121212;
+        }
+        .main-menu.open {
+            background-color: #b0c4de;
+            height: 87vh;
+            width: 60vw;
+            right: 0;
+            bottom: 0;
+        }
+        .main-menu li {
+            margin-top: 20px;
+            font-size: 20px;
+            border: solid 1px #191970;
+        }
+    }
+    /* ここまでメインメニュー一覧のアニメーション */
+
+    .date-tabs {
+        width: 80%;
+        height: 50px;
+        margin: 5px auto;
+        font-size: 20px;
+        justify-content: space-between;
+
+        .date-tabs__btn {
+            border: 1px solid black;
+            width: 80px;
+            height: 50px;
+        }
+        .active {
+            border-bottom: solid 3px RGB(135, 206, 235, 0.9);
+        }
+    }
+
+    .main-content__sup {
+        height: 40px;
+        .show-error {
+            font-size: 13px;
+            text-align: center;
+            margin-left: 0;
+            width: 200px;
+        }
+        .tasks-sort-form {
+            margin-right: 0;
+            gap: 3px;
+
+            .tasks-sort-form__text {
+                width: 100px;
+                font-size: 11px;
+                line-height: 20px;
+                text-align: center;
+            }
+            .tasks-sort-form__submit {
+                font-size: 10px;
+                width: 60px;
+            }
+        }
+    }
+
+    .tasks-list__form {
+        margin: 10px;
+        .tasks-list {
+            height: 50vh;
+            .tasks-list__item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                height: 30px;
+                margin: 10px 5px;
+                padding: 10px;
+                border-radius: 20px;
+            }
+        }
+    }
+}
