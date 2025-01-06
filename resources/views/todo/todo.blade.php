@@ -73,7 +73,7 @@ Todoリスト
             <!-- /メインメニューの一覧リスト -->
 
             <!-- メインメニューの一覧リスト -->
-            <ul id="mainMenu" class="main-menu hidden">
+            <ul id="mainMenu" class="main-menu">
                 <li><a href="{{ route('todo.index') }}">メインページ</a></li>
                 <li><a href="{{ route('todo.upcomingTasks') }}">タスク一覧</a></li>
                 <li><a href="{{ route('todo.pastTasks') }}">終了したタスク</a></li>

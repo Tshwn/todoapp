@@ -82,23 +82,23 @@ header {
         text-align: center;
         width: 100%;
         left: -100%;
+        background-color: #b0c4de;
+        height: 100%;
+        width: 40%;
+        bottom: 0;
+        top: 0;
         transition: 0.5s ease-in-out;
         border: solid 1px #121212;
     }
-
+    .settings-menu.open {
+        left: 0;
+    }
     .settings-menu li {
         width: 90%;
         font-size: 20px;
         padding: 10px;
         margin: 10px auto;
         border: solid 1px #191970;
-    }
-    .settings-menu.open {
-        background-color: #b0c4de;
-        height: 95%;
-        width: 40%;
-        left: 0;
-        bottom: 0;
     }
     .settings-menu__logout {
         background-color: gray; /* ボタンの背景色 */
@@ -114,35 +114,31 @@ header {
 
     /* ここからメインメニュー一覧のアニメーション */
     .main-menu__container {
-        width: 100%;
-        position: relative;
-        overflow: hidden;
-    }
-    .main-menu {
-        display: flex;
-        flex-direction: column;
-        position: fixed;
-        z-index: 100;
-        text-align: center;
-        width: 100%;
-        right: -100%;
-        transition: 0.5s ease-in-out;
-        border: solid 1px #121212;
-        margin-right: 0;
-    }
-    .main-menu.open {
-        background-color: #b0c4de;
-        height: 100%;
-        width: 30%;
-        right: 0;
-        bottom: 0;
-    }
-    .main-menu li {
-        width: 90%;
-        font-size: 20px;
-        padding: 10px;
-        margin: 10px auto;
-        border: solid 1px #191970;
+        .main-menu {
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            z-index: 100;
+            text-align: center;
+            right: -100%;
+            transition: 0.5s ease-in-out;
+            border: solid 1px #121212;
+            bottom: 0;
+            top: 0;
+            background-color: #b0c4de;
+            height: 100%;
+            width: 300px;
+        }
+        .main-menu.open {
+            right: 0;
+        }
+        .main-menu li {
+            width: 90%;
+            font-size: 20px;
+            padding: 10px;
+            margin: 10px auto;
+            border: solid 1px #191970;
+        }
     }
     /* ここまでメインメニュー一覧のアニメーション */
 }
