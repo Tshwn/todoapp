@@ -12,7 +12,7 @@ Todoリスト
 
     <div class="header-navs__box--l">
              <!-- 設定メニューのコンテナ -->
-    <div class="settings-menu__container" style="background-color:lightgray;">
+    <div class="settings-menu__container">
         <!-- 設定メニューのボタン -->
         <button id="settingsMenuBtn" class="settings-menu__btn header-navs__btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 24 24">
@@ -43,7 +43,7 @@ Todoリスト
 
     <div class="header-navs__box--r">
     <!-- 検索メニューのコンテナ -->
-    <div class="search-menu_container" style="background-color:lightgray;">
+    <div class="search-menu_container">
         <!-- 検索メニューのボタン -->
         <button id="searchMenuBtn" class="search-menu__btn header-navs__btn">
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="35" viewBox="0 0 16 16">
@@ -63,7 +63,7 @@ Todoリスト
     <!-- /検索メニューのコンテナ -->
 
     <!-- メインメニュー一覧 -->
-    <div class="main-menu__container" style="background-color:lightgray;">
+    <div class="main-menu__container">
             <!-- メインメニューのボタン -->
             <button id="mainMenuBtn" class="main-menu__btn header-navs__btn">
                 <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 24 24">
@@ -77,7 +77,7 @@ Todoリスト
                 <li><a href="{{ route('todo.index') }}">メインページ</a></li>
                 <li><a href="{{ route('todo.upcomingTasks') }}">タスク一覧</a></li>
                 <li><a href="{{ route('todo.pastTasks') }}">終了したタスク</a></li>
-                <li><a href="">カレンダー</a></li>
+                <!-- <li><a href="">カレンダー</a></li> -->
             </ul>
             <!-- /メインメニューの一覧リスト -->
     </div>
@@ -90,32 +90,29 @@ Todoリスト
 
 
  <!-- 日付タブ -->
- <div class="date-tabs" style="background-color:lightgray;">
+ <div class="date-tabs">
     <button id="tasks-today_btn" class="date-tabs__btn date-tabs__btn--today">今日</button>
     <button id="tasks-tomorrow_btn" class="date-tabs__btn date-tabs__btn--tommorow">明日</button>
     <button id="tasks-thisWeek_btn" class="date-tabs__btn date-tabs__btn--thisweek">７日間</button>
 </div>
 <!-- /日付タブ -->
 
- <!-- /ヘッダー -->
-@endsection
 
-
-@section('main')
-<div class="main-content__sup" style="background-color:lightgray;border:1px solid black;">
+<!-- エラーとソート機能のスペース -->
+<div class="header-tasks__sup">
     <!-- エラー表示 -->
-    <div class="show-error" style="background-color:lightblue;border:1px solid black;">
+    <div class="show-error">
         @if ($errors->any())
             <div class="text-red-500">{{ $errors->first() }}</div>
         @endif
-        <div>ここにエラーが表示される</div>
+        <!-- <div>ここにエラーが表示される</div> -->
     </div>
     <!-- エラー表示 -->
 
     <!-- ソート機能フォーム -->
-    <form method="GET" action="{{ route('todo.index') }}" class="tasks-sort-form" style="background-color:lightgray;border:1px solid black;">
+    <form method="GET" action="{{ route('todo.index') }}" class="tasks-sort-form">
         @csrf
-        <select name="sort_by" id="sortBy" class="tasks-sort-form__text" style="background-color:lightblue;border:1px solid black;">
+        <select name="sort_by" id="sortBy" class="tasks-sort-form__text">
             <option value="dateAsc">日付(昇順)</option>
             <option value="dateDesc">日付(降順)</option>
 
@@ -125,16 +122,21 @@ Todoリスト
             <option value="colorAsc">色(赤上)</option>
             <option value="colorDesc">色(白上)</option>  
         </select>
-        <input class="tasks-sort-form__submit" type="submit" style="background-color:lightgray; border:1px solid black;" value="ソートする">
+        <input class="tasks-sort-form__submit" type="submit" value="ソートする">
     </form>
     <!-- /ソート機能フォーム -->
 </div>
+<!-- /エラーとソート機能のスペース -->
+
+ <!-- /ヘッダー -->
+@endsection
 
 
+@section('main')
 <!-- 今日、明日、7日間のタスクの表示 -->
 
 <!-- 削除用フォーム -->
-<form action="{{ route('todo.deleteMultiple') }}" method="post" class="tasks-list__form" style="border:1px solid black;">
+<form action="{{ route('todo.deleteMultiple') }}" method="post" class="tasks-list__form">
     @csrf
     @method('DELETE')
 
@@ -181,7 +183,7 @@ Todoリスト
 
 <!-- /今日、明日、7日間のタスクの表示 -->
 
-<div class="bottom-actions" style="background-color:lightgray;border:1px solid black;">
+<div class="bottom-actions">
     <!-- 削除ボタン -->
     <button id="DeleteBtn" class="bottom-actions__btn tasks-delete__btn">
         <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 24 24">
@@ -189,7 +191,7 @@ Todoリスト
         </svg>
     </button>
     <!-- /削除ボタン -->
-     
+    
      <!-- 追加ボタン -->
     <button id="toggleFormBtn" class="bottom-actions__btn tasks-add__btn">
         <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 24 24">

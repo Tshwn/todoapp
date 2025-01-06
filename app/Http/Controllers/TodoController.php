@@ -18,7 +18,8 @@ class TodoController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->session()->get('search', null);    
+        $search = $request->session()->get('search', null);
+        // $search = $request->input('search');
         $user = Auth::user();
         $today = Carbon::today()->toDateString();
         if(isset($search))
@@ -105,7 +106,7 @@ class TodoController extends Controller
         Board::create($param);
         $user = Auth::user();
         $posts = Board::UserPosts($user)->get();
-        return redirect()->route('todo.index');
+        return redirect()->back();
     }
 
     /**
