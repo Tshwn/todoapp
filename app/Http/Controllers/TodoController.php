@@ -18,55 +18,35 @@ class TodoController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->session()->get('search', null);
-        // $search = $request->input('search');
         $user = Auth::user();
         $today = Carbon::today()->toDateString();
-        if(isset($search))
-        {
-            $todayPosts = Board::UserPosts($user)->TodayPosts()->where('message','like','%' . $search . '%')->get();
-            $tomorrowPosts = Board::UserPosts($user)->TomorrowPosts()->where('message','like','%' . $search . '%')->get();
-            $thisWeekPosts = Board::UserPosts($user)->ThisWeekPosts()->where('message','like','%' . $search . '%')->get();
-        }
-        else
-        {
-            $todayPosts = Board::UserPosts($user)->TodayPosts()->get();
-            $tomorrowPosts = Board::UserPosts($user)->TomorrowPosts()->get();
-            $thisWeekPosts = Board::UserPosts($user)->ThisWeekPosts()->get();
-        }
 
-        $sortBy = $request->input('sort_by');
+        $query = Board::UserPosts($user);
+        $sortBy = $request->input('sort_by','colorAsc');
+        $search = $request->session()->get('search', null);
+        if(isset($search)) {
+            $query->where('message','like','%' . $search . '%');
+        }
         if($sortBy === 'dateAsc'):
-            $todayPosts = Board::UserPosts($user)->orderBy('due_date','asc')->TodayPosts()->get();
-            $tomorrowPosts = Board::UserPosts($user)->orderBy('due_date','asc')->TomorrowPosts()->get();
-            $thisWeekPosts = Board::UserPosts($user)->orderBy('due_date','asc')->ThisWeekPosts()->get();
+            $query->orderBy('due_date','asc');
         elseif($sortBy === 'dateDesc'):
-            $todayPosts = Board::UserPosts($user)->orderBy('due_date','desc')->TodayPosts()->get();
-            $tomorrowPosts = Board::UserPosts($user)->orderBy('due_date','desc')->TomorrowPosts()->get();
-            $thisWeekPosts = Board::UserPosts($user)->orderBy('due_date','desc')->ThisWeekPosts()->get();
+            $query->orderBy('due_date','desc');
         elseif($sortBy === 'createdAsc'):
-            $todayPosts = Board::UserPosts($user)->orderBy('created_at','asc')->TodayPosts()->get();
-            $tomorrowPosts = Board::UserPosts($user)->orderBy('created_at','asc')->TomorrowPosts()->get();
-            $thisWeekPosts = Board::UserPosts($user)->orderBy('created_at','asc')->ThisWeekPosts()->get();
+            $query->orderBy('created_at','asc');
         elseif($sortBy === 'createdDesc'):
-            $todayPosts = Board::UserPosts($user)->orderBy('created_at','desc')->TodayPosts()->get();
-            $tomorrowPosts = Board::UserPosts($user)->orderBy('created_at','desc')->TomorrowPosts()->get();
-            $thisWeekPosts = Board::UserPosts($user)->orderBy('created_at','desc')->ThisWeekPosts()->get();
+            $query->orderBy('created_at','desc');
         elseif($sortBy === 'colorAsc'):
-            $todayPosts = Board::UserPosts($user)->orderBy('colors_id','asc')->TodayPosts()->get();
-            $tomorrowPosts = Board::UserPosts($user)->orderBy('colors_id','asc')->TomorrowPosts()->get();
-            $thisWeekPosts = Board::UserPosts($user)->orderBy('colors_id','asc')->ThisWeekPosts()->get();
+            $query->orderBy('colors_id','asc');
         elseif($sortBy === 'colorDesc'):
-            $todayPosts = Board::UserPosts($user)->orderBy('colors_id','desc')->TodayPosts()->get();
-            $tomorrowPosts = Board::UserPosts($user)->orderBy('colors_id','desc')->TomorrowPosts()->get();
-            $thisWeekPosts = Board::UserPosts($user)->orderBy('colors_id','desc')->ThisWeekPosts()->get();
+            $query->orderBy('colors_id','desc');
         endif;
+        
+        $todayPosts = $query->clone()->TodayPosts()->get();
+        $tomorrowPosts = $query->clone()->TomorrowPosts()->get();
+        $thisWeekPosts = $query->clone()->ThisWeekPosts()->get();
+        //get()で呼び出すと$queryの中身が取得した結果になるので、clone()を使って$queryに直接変化を加えないようにする
 
-        return view('todo.todo',['today' => $today,'todayPosts' => $todayPosts,'tomorrowPosts' => $tomorrowPosts,'thisWeekPosts' => $thisWeekPosts,'user' => $user]);
-    }
-
-    public function calendar() {
-        return view('todo.calendar');
+        return view('todo.todo',compact('today','todayPosts','tomorrowPosts','thisWeekPosts','user'));
     }
     /**
      * Show the form for creating a new resource.
@@ -89,11 +69,7 @@ class TodoController extends Controller
         } elseif($request->input('colors_id') === '3') {
             $color = "#D3D3D3";
         }
-        // $colors = [
-        //     '1' => '#ff6347',
-        //     '2' => '#00ff7f',
-        //     '3' => '#D3D3D3',
-        // ];
+
         $this->authorize('create', Todo::class);
         $param = [
             'user_id' => auth()->id(),
@@ -101,11 +77,8 @@ class TodoController extends Controller
             'due_date' => $request->input('due_date'),
             'colors_id' => $request->input('colors_id'),
             'color' => $color,
-            // 'color' => $colors[$request->input('colors_id')],
         ];
         Board::create($param);
-        $user = Auth::user();
-        $posts = Board::UserPosts($user)->get();
         return redirect()->back();
     }
 
@@ -123,7 +96,7 @@ class TodoController extends Controller
     public function edit(string $id)
     {
         $post = Board::findOrFail($id);
-        return view('todo.edit',['post' => $post]);
+        return view('todo.edit',compact('post'));
     }
 
     /**
@@ -170,7 +143,7 @@ class TodoController extends Controller
         if (empty($itemIds)) {
             return redirect()->back();
         }
-        Board::whereIn('id', $itemIds)->delete();     
+        Board::whereIn('id', $itemIds)->delete();
         return redirect()->back();
     }
 
@@ -179,32 +152,32 @@ class TodoController extends Controller
         $search = $request->session()->get('search', null);
         $user = Auth::user();
         $today = Carbon::today()->toDateString();
-        // ->where('due_date',Carbon::toDateString())
-        if(isset($search))
-        {
-            $posts = Board::UserPosts($user)->where('message','like','%' . $search . '%')->where('due_date','>=',$today)->get();
-        }
-        else
-        {
-            $posts = Board::UserPosts($user)->where('due_date','>=',$today)->get();
+
+        $query = Board::UserPosts($user);
+        $sortBy = $request->input('sort_by','colorAsc');
+
+        $search = $request->session()->get('search', null);
+        if(isset($search)) {
+            $query->where('message','like','%' . $search . '%');
         }
 
-        $sortBy = $request->input('sort_by');
         if($sortBy === 'dateAsc'):
-            $posts = Board::UserPosts($user)->where('due_date','>=',$today)->orderBy('due_date','asc')->get();
+            $query->orderBy('due_date','asc');
         elseif($sortBy === 'dateDesc'):
-            $posts = Board::UserPosts($user)->where('due_date','>=',$today)->orderBy('due_date','desc')->get();
+            $query->orderBy('due_date','desc');
         elseif($sortBy === 'createdAsc'):
-            $posts = Board::UserPosts($user)->where('due_date','>=',$today)->orderBy('created_at','asc')->get();
+            $query->orderBy('created_at','asc');
         elseif($sortBy === 'createdDesc'):
-            $posts = Board::UserPosts($user)->where('due_date','>=',$today)->orderBy('created_at','desc')->get();
+            $query->orderBy('created_at','desc');
         elseif($sortBy === 'colorAsc'):
-            $posts = Board::UserPosts($user)->where('due_date','>=',$today)->orderBy('colors_id','asc')->get();
+            $query->orderBy('colors_id','asc');
         elseif($sortBy === 'colorDesc'):
-            $posts = Board::UserPosts($user)->where('due_date','>=',$today)->orderBy('colors_id','desc')->get();
+            $query->orderBy('colors_id','desc');
         endif;
 
-        return view('todo.upcomingTasks',['posts' => $posts,'user' => $user,'today' => $today]);
+        $posts = $query->where('due_date','>=',$today)->get();
+
+        return view('todo.upcomingTasks',compact('posts','user','today'));
     }
 
     public function pastTasks(Request $request)
@@ -212,37 +185,37 @@ class TodoController extends Controller
         $search = $request->session()->get('search', null);
         $user = Auth::user();
         $today = Carbon::today()->toDateString();
-        if(isset($search))
-        {
-            $posts = Board::UserPosts($user)->where('message','like','%' . $search . '%')->where('due_date','<',$today)->get();
-        }
-        else
-        {
-            $posts = Board::UserPosts($user)->where('due_date','<',$today)->get();
-        }
 
-        $sortBy = $request->input('sort_by');
+        $query = Board::UserPosts($user);
+        $sortBy = $request->input('sort_by','colorAsc');
+
+        $search = $request->session()->get('search', null);
+        if(isset($search)) {
+            $query->where('message','like','%' . $search . '%');
+        }
+        
         if($sortBy === 'dateAsc'):
-            $posts = Board::UserPosts($user)->where('due_date','<',$today)->orderBy('due_date','asc')->get();
+            $query->orderBy('due_date','asc');
         elseif($sortBy === 'dateDesc'):
-            $posts = Board::UserPosts($user)->where('due_date','<',$today)->orderBy('due_date','desc')->get();
+            $query->orderBy('due_date','desc');
         elseif($sortBy === 'createdAsc'):
-            $posts = Board::UserPosts($user)->where('due_date','<',$today)->orderBy('created_at','asc')->get();
+            $query->orderBy('created_at','asc');
         elseif($sortBy === 'createdDesc'):
-            $posts = Board::UserPosts($user)->where('due_date','<',$today)->orderBy('created_at','desc')->get();
+            $query->orderBy('created_at','desc');
         elseif($sortBy === 'colorAsc'):
-            $posts = Board::UserPosts($user)->where('due_date','<',$today)->orderBy('colors_id','asc')->get();
+            $query->orderBy('colors_id','asc');
         elseif($sortBy === 'colorDesc'):
-            $posts = Board::UserPosts($user)->where('due_date','<',$today)->orderBy('colors_id','desc')->get();
+            $query->orderBy('colors_id','desc');
         endif;
 
-        return view('todo.pastTasks',['posts' => $posts,'user' => $user,'today' => $today]);
+        $posts = $query->where('due_date','<',$today)->get();
+
+        return view('todo.pastTasks',compact('posts','user','today'));
     }
 
     public function search(Request $request)
     {
         $search = $request->input('text');
-        // return redirect()->route('todo.index',['search' => $search]);
-        return redirect()->back()->with(['search' => $search]);
+        return redirect()->back()->with(compact('search'));
     }
 }
