@@ -11,6 +11,11 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/admin/dashboard', function () {
+    return view('admin-dashboard');
+})->middleware(['auth', 'can:admin', 'verified'])->name('admin.dashboard');
+// https://zenn.dev/369code/articles/b7840c2c32bfaeを参照して追加
+
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');

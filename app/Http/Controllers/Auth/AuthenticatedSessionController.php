@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Gate;//追加
 
 class AuthenticatedSessionController extends Controller
 {
@@ -28,6 +29,10 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        if (Gate::allows('admin', Auth::user())) {
+            return redirect()->intended(route('admin.dashboard', absolute: false));
+        }
+        
         return redirect()->intended(route('todo.index', absolute: false));
         // routeを'dashbord'から変更した。
         //->names(['todo.index'])と名づけることで機能するようになった。

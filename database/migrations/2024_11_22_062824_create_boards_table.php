@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('message');
             $table->date('due_date');
+            $table->integer('colors_id')->default(1);
             $table->string('color')->default('#D3D3D3');
             $table->timestamps();
         });

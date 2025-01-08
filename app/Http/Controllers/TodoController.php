@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Board;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\BoardRequest;
+use App\Http\Requests\TaskCreateRequest;
+use App\Http\Requests\TaskUpdateRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Carbon\Carbon;
 
 class TodoController extends Controller
 {
@@ -16,15 +18,35 @@ class TodoController extends Controller
      */
     public function index(Request $request)
     {
-        $sort = $request->sort;
-
         $user = Auth::user();
-        $posts = Board::UserPosts($user)->TodayPosts()->orderBy($sort,'asc')->get();
-        return view('todo.todo',['posts' => $posts,'user' => $user,'sort' => $sort]);
-    }
+        $today = Carbon::today()->toDateString();
 
-    public function calendar() {
-        return view('todo.calendar');
+        $query = Board::UserPosts($user);
+        $sortBy = $request->input('sort_by','colorAsc');
+        $search = $request->session()->get('search', null);
+        if(isset($search)) {
+            $query->where('message','like','%' . $search . '%');
+        }
+        if($sortBy === 'dateAsc'):
+            $query->orderBy('due_date','asc');
+        elseif($sortBy === 'dateDesc'):
+            $query->orderBy('due_date','desc');
+        elseif($sortBy === 'createdAsc'):
+            $query->orderBy('created_at','asc');
+        elseif($sortBy === 'createdDesc'):
+            $query->orderBy('created_at','desc');
+        elseif($sortBy === 'colorAsc'):
+            $query->orderBy('colors_id','asc');
+        elseif($sortBy === 'colorDesc'):
+            $query->orderBy('colors_id','desc');
+        endif;
+        
+        $todayPosts = $query->clone()->TodayPosts()->get();
+        $tomorrowPosts = $query->clone()->TomorrowPosts()->get();
+        $thisWeekPosts = $query->clone()->ThisWeekPosts()->get();
+        //get()で呼び出すと$queryの中身が取得した結果になるので、clone()を使って$queryに直接変化を加えないようにする
+
+        return view('todo.todo',compact('today','todayPosts','tomorrowPosts','thisWeekPosts','user'));
     }
     /**
      * Show the form for creating a new resource.
@@ -38,19 +60,26 @@ class TodoController extends Controller
      * Store a newly created resource in storage.
      */
     use AuthorizesRequests;
-    public function store(BoardRequest $request)
+    public function store(TaskCreateRequest $request)
     {
+        if($request->input('colors_id') === '1') {
+            $color = "#ff6347";
+        } elseif($request->input('colors_id') === '2') {
+            $color = "#00ff7f";
+        } elseif($request->input('colors_id') === '3') {
+            $color = "#D3D3D3";
+        }
+
         $this->authorize('create', Todo::class);
         $param = [
             'user_id' => auth()->id(),
             'message' => $request->input('message'),
             'due_date' => $request->input('due_date'),
-            'color' => $request->input('color'),
+            'colors_id' => $request->input('colors_id'),
+            'color' => $color,
         ];
         Board::create($param);
-        $user = Auth::user();
-        $posts = Board::UserPosts($user)->get();
-        return redirect()->route('todo.index');
+        return redirect()->back();
     }
 
     /**
@@ -66,27 +95,29 @@ class TodoController extends Controller
      */
     public function edit(string $id)
     {
-        $form = Board::findOrFail($id);
-        return view('todo.edit',['form' => $form]);
+        $post = Board::findOrFail($id);
+        return view('todo.edit',compact('post'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(TaskUpdateRequest $request, string $id)
     {
+        if($request->input('colors_id') === '1') {
+            $color = "#ff6347";
+        } elseif($request->input('colors_id') === '2') {
+            $color = "#00ff7f";
+        } elseif($request->input('colors_id') === '3') {
+            $color = "#D3D3D3";
+        }
         $post = Board::findOrFail($id);
-        // if ($request->has('progress')) {
-        //     $request->progress = $request->progress === '未達成' ? '完了':'未達成';
-        //     $post->update([
-        //         'progress' => $request->progress,
-        //     ]);
-        //     return redirect()->route('todo.index');
-        // }
         $post->update([
-            'message' => $request->message,
-            'due_date' => $request->due_date,
-            'color' => $request->color,
+            'user_id' => auth()->id(),
+            'message' => $request->input('message'),
+            'due_date' => $request->input('due_date'),
+            'colors_id' => $request->input('colors_id'),
+            'color' => $color,
         ]);
         return redirect()->route('todo.index');
     }
@@ -104,5 +135,87 @@ class TodoController extends Controller
 
         $post->delete();
         return redirect()->route('todo.index');
+    }
+
+    public function deleteMultiple(Request $request)
+    {
+        $itemIds = $request->input('items', []);
+        if (empty($itemIds)) {
+            return redirect()->back();
+        }
+        Board::whereIn('id', $itemIds)->delete();
+        return redirect()->back();
+    }
+
+    public function upcomingTasks(Request $request)
+    {
+        $search = $request->session()->get('search', null);
+        $user = Auth::user();
+        $today = Carbon::today()->toDateString();
+
+        $query = Board::UserPosts($user);
+        $sortBy = $request->input('sort_by','colorAsc');
+
+        $search = $request->session()->get('search', null);
+        if(isset($search)) {
+            $query->where('message','like','%' . $search . '%');
+        }
+
+        if($sortBy === 'dateAsc'):
+            $query->orderBy('due_date','asc');
+        elseif($sortBy === 'dateDesc'):
+            $query->orderBy('due_date','desc');
+        elseif($sortBy === 'createdAsc'):
+            $query->orderBy('created_at','asc');
+        elseif($sortBy === 'createdDesc'):
+            $query->orderBy('created_at','desc');
+        elseif($sortBy === 'colorAsc'):
+            $query->orderBy('colors_id','asc');
+        elseif($sortBy === 'colorDesc'):
+            $query->orderBy('colors_id','desc');
+        endif;
+
+        $posts = $query->where('due_date','>=',$today)->get();
+
+        return view('todo.upcomingTasks',compact('posts','user','today'));
+    }
+
+    public function pastTasks(Request $request)
+    {
+        $search = $request->session()->get('search', null);
+        $user = Auth::user();
+        $today = Carbon::today()->toDateString();
+
+        $query = Board::UserPosts($user);
+        $sortBy = $request->input('sort_by','colorAsc');
+
+        $search = $request->session()->get('search', null);
+        if(isset($search)) {
+            $query->where('message','like','%' . $search . '%');
+        }
+        
+        if($sortBy === 'dateAsc'):
+            $query->orderBy('due_date','asc');
+        elseif($sortBy === 'dateDesc'):
+            $query->orderBy('due_date','desc');
+        elseif($sortBy === 'createdAsc'):
+            $query->orderBy('created_at','asc');
+        elseif($sortBy === 'createdDesc'):
+            $query->orderBy('created_at','desc');
+        elseif($sortBy === 'colorAsc'):
+            $query->orderBy('colors_id','asc');
+        elseif($sortBy === 'colorDesc'):
+            $query->orderBy('colors_id','desc');
+        endif;
+
+        $posts = $query->where('due_date','<',$today)->get();
+
+        return view('todo.pastTasks',compact('posts','user','today'));
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->input('text');
+        return redirect()->back()->with(compact('search'));
     }
 }
