@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Gate;//追加
+use App\Models\User;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -18,6 +19,16 @@ class AuthenticatedSessionController extends Controller
     public function create(): View
     {
         return view('auth.login');
+    }
+
+    public function guestLogin()
+    {
+        $guestUser = User::where('email','guest@example.com')->first();
+
+        if($guestUser) {
+            Auth::login($guestUser);
+            return redirect()->route('todo.index');
+        }
     }
 
     /**

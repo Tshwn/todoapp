@@ -21,7 +21,6 @@ Route::resource('/todo',TodoController::class)->middleware('auth')
 ]);
 Route::delete('/todo',[TodoController::class,'deleteMultiple'])->name('todo.deleteMultiple');
 
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

@@ -11,6 +11,8 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/guestlogin',[AuthenticatedSessionController::class, 'guestLogin']);
+
 Route::get('/admin/dashboard', function () {
     return view('admin-dashboard');
 })->middleware(['auth', 'can:admin', 'verified'])->name('admin.dashboard');
